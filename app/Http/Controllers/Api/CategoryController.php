@@ -17,7 +17,7 @@ class CategoryController extends Controller
     {
         $result = Category::all();
 
-        return $result;
+        return response()->json($result);
     }
 
     /**
@@ -85,6 +85,7 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $category = Category::find($id);
+        $category->delete();
     }
 }

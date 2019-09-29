@@ -73176,8 +73176,27 @@ var Listing = function (_Component) {
             });
         }
     }, {
+        key: 'onDelete',
+        value: function onDelete(category_id) {
+            var _this3 = this;
+
+            __WEBPACK_IMPORTED_MODULE_1_axios___default.a.delete('http://127.0.0.1:8000/category/delete/' + category_id).then(function (response) {
+                var categories = _this3.state.categories;
+
+                for (var i = 0; i < categories.length; i++) {
+                    if (categories[i].id == category_id) {
+                        categories.splice(i, 1);
+
+                        _this3.setState({ categories: categories });
+                    }
+                }
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
+            var _this4 = this;
+
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 null,
@@ -73214,6 +73233,11 @@ var Listing = function (_Component) {
                                 'th',
                                 { scope: 'col' },
                                 'Updated At'
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'th',
+                                { scope: 'col' },
+                                'Action'
                             )
                         )
                     ),
@@ -73248,6 +73272,11 @@ var Listing = function (_Component) {
                                     'td',
                                     null,
                                     category.updated_at
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'a',
+                                    { href: '#', onClick: _this4.onDelete.bind(_this4, category.id) },
+                                    'Delete'
                                 )
                             );
                         })
