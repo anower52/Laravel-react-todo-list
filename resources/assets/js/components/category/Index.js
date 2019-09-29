@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {BrowserRouter as Router, Link ,Route} from 'react-router-dom';
 import Add from './Add';
-import Listing from './listing';
+import Listing from './Listing';
 
 export default class About extends Component {
     render() {
