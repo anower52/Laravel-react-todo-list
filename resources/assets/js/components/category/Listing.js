@@ -1,23 +1,48 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
+import Pagination from "react-js-pagination";
 
 export default class Listing extends Component {
 
     constructor(){
         super();
             this.state = {
-                categories: []
+                categories: [],
+                activePage:1,
+                itemsCountPerPage:1,
+                totalItemsCount:1,
+                pageRangeDisplayed:3
             }
+            this.handlePageChange=this.handlePageChange.bind(this);
     }
 
     componentDidMount()
     {
         axios.get('http://127.0.0.1:8000/category')
         .then(response=>{
-            this.setState({categories:response.data });
+            this.setState({
+                categories:response.data.data,
+                itemsCountPerPage:response.data.per_page,
+                totalItemsCount:response.data.total,
+                activePage:response.data.current_page 
+            });
         });
     }
+
+    handlePageChange(pageNumber) {
+        console.log(`active page is ${pageNumber}`);
+        
+        axios.get('http://127.0.0.1:8000/category?page='+pageNumber)
+        .then(response=>{
+            this.setState({
+                categories:response.data.data,
+                itemsCountPerPage:response.data.per_page,
+                totalItemsCount:response.data.total,
+                activePage:response.data.current_page 
+            });
+        });
+      }
 
     onDelete(category_id)
     {
@@ -71,6 +96,19 @@ export default class Listing extends Component {
                             }
                         </tbody>
                     </table>
+
+                    
+                    <div class="d-flex justify-content-center">
+                        <Pagination
+                        activePage={this.state.activePage}
+                        itemsCountPerPage={this.state.itemsCountPerPage}
+                        totalItemsCount={this.state.totalItemsCount}
+                        pageRangeDisplayed={this.state.pageRangeDisplayed}
+                        onChange={this.handlePageChange}
+                        itemClass='page-item'
+                        linkClass='page-link'
+                        />
+                    </div>
             </div>
         );
     }
